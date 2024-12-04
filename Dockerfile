@@ -26,10 +26,8 @@ RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
     make && \
     make install
 
-# 暴露服务端口（ttyd 默认端口为 7681）
+# 暴露服务端口（仅文档化，实际端口由 $PORT 决定）
 EXPOSE 7681
 
-# 设置默认命令，启动 ttyd 并运行 bash
-CMD ["sh", "-c", "ttyd --port ${PORT:-8080} bash"]
-CMD ["sh", "-c", "echo PORT: $PORT && ttyd --port ${PORT:-8080} bash"]
-
+# 设置默认命令，强制依赖 $PORT 环境变量
+CMD ["sh", "-c", "if [ -z \"$PORT\" ]; then echo 'Error: PORT environment variable not set!' && exit 1; fi && ttyd --port $PORT bash"]
