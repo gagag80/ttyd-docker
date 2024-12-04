@@ -29,5 +29,8 @@ RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
 # 暴露端口（仅供参考，Railway 会动态分配端口）
 EXPOSE 8080
 
+# 设置默认端口为 8080，如果 $PORT 存在则覆盖
+ENV PORT=${PORT:-8080}
+
 # 使用 sh -c 解析 $PORT
 CMD ["sh", "-c", "echo 'Using PORT: $PORT'; ttyd --port $PORT bash"]
