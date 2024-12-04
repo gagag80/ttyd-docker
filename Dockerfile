@@ -29,5 +29,5 @@ RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
 # 暴露服务端口（仅文档化，实际端口由 $PORT 决定）
 EXPOSE 7681
 
-# 设置默认命令，强制依赖 $PORT 环境变量
+# 设置默认命令，确保使用 $PORT 环境变量
 CMD ["sh", "-c", "if [ -z \"$PORT\" ]; then echo 'Error: PORT environment variable not set!' && exit 1; fi && ttyd --port $PORT bash"]
