@@ -23,5 +23,14 @@ RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
     make && \
     make install
 
-# 设置默认启动命令，直接运行 ttyd
-CMD ["ttyd", "-p", "8080", "bash"]
+# 设置工作目录
+WORKDIR /app
+
+# 暴露端口（Railway 会动态分配端口）
+EXPOSE 8080
+
+# 使用环境变量 PORT，确保兼容 Railway 的动态端口分配
+ENV PORT=8080
+
+# 设置默认启动命令，动态监听 Railway 分配的端口
+CMD ["sh", "-c", "ttyd -p ${PORT} bash"]
