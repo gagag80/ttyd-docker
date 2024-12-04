@@ -1,4 +1,3 @@
-# 使用 Ubuntu 作为基础镜像
 FROM ubuntu:latest
 
 # 安装必要的依赖
@@ -11,26 +10,31 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libuv1-dev \
     libjson-c-dev \
-    libwebsockets-dev && \
-    apt-get clean
+    libwebsockets-dev \
+    vim \
+    curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# 克隆 ttyd 源代码并编译
+# 编译安装 ttyd
 RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
     cd /ttyd && \
     mkdir build && \
     cd build && \
     cmake .. && \
     make && \
-    make install
+    make install && \
+    cd / && \
+    rm -rf /ttyd
 
 # 设置工作目录
-WORKDIR /app
+WORKDIR /root
 
-# 暴露端口（Railway 会动态分配端口）
-EXPOSE 8080
+# 暴露端口
+EXPOSE 7681
 
-# 使用环境变量 PORT，确保兼容 Railway 的动态端口分配
-ENV PORT=8080
+# 设置默认端口
+ENV PORT=7681
 
-# 设置默认启动命令，启用可写模式并动态监听 Railway 分配的端口
-CMD ["sh", "-c", "ttyd --writable -p ${PORT} bash"]
+# 启动命令 - 显式指定 interface 为 0.0.0.0
+CMD ["sh", "-c", "ttyd --interface 0.0.0.0 -p ${PORT} bash"]
