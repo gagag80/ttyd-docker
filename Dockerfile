@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     zlib1g-dev \
     libuv1-dev \
-    libjson-c-dev && \
+    libjson-c-dev \
+    libwebsockets-dev && \
     apt-get clean
 
 # 克隆 ttyd 仓库并构建
