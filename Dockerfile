@@ -30,4 +30,5 @@ RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
 EXPOSE 7681
 
 # 设置默认命令，启动 ttyd 并运行 bash
-CMD ["ttyd", "--port", "$PORT", "bash"]
+CMD ["sh", "-c", "ttyd --port ${PORT:-8080} bash"]
+
