@@ -29,8 +29,9 @@ RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
 # 暴露端口（仅供参考，Railway 会动态分配端口）
 EXPOSE 8080
 
-# 设置 ENTRYPOINT，直接使用 ttyd 并传递参数
-ENTRYPOINT ["ttyd", "--port"]
+# 添加启动脚本
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# 使用 CMD 传递默认的环境变量和命令
-CMD ["$PORT", "bash"]
+# 使用脚本作为 ENTRYPOINT
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
