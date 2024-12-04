@@ -4,7 +4,7 @@ FROM ubuntu:latest
 # 设置环境变量以避免交互式安装
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 更新包管理器并安装必要依赖
+# 安装必要依赖
 RUN apt-get update && apt-get install -y \
     git \
     cmake \
@@ -26,8 +26,8 @@ RUN git clone https://github.com/tsl0922/ttyd.git /ttyd && \
     make && \
     make install
 
-# 暴露服务端口（仅文档化，实际端口由 $PORT 决定）
-EXPOSE 7681
+# 暴露端口（仅供参考，Railway 会动态分配端口）
+EXPOSE 8080
 
-# 设置默认命令，确保使用 $PORT 环境变量，并输出调试信息
-CMD ["sh", "-c", "echo 'Using PORT: $PORT'; if [ -z \"$PORT\" ]; then echo 'Error: PORT environment variable not set!' && exit 1; fi && ttyd --port $PORT bash"]
+# 使用 sh -c 解析 $PORT
+CMD ["sh", "-c", "echo 'Using PORT: $PORT'; ttyd --port $PORT bash"]
