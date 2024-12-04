@@ -32,5 +32,5 @@ EXPOSE 8080
 # 使用环境变量 PORT，确保兼容 Railway 的动态端口分配
 ENV PORT=8080
 
-# 设置默认启动命令，动态监听 Railway 分配的端口
-CMD ["sh", "-c", "ttyd -p ${PORT} bash"]
+# 设置默认启动命令，启用可写模式并动态监听 Railway 分配的端口
+CMD ["sh", "-c", "ttyd --writable -p ${PORT} bash"]
